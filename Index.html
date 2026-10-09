@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+  <title>TaskFlow — Your Workspace</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+<div class="app">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-icon">✦</div>
+      <span>taskflow<span class="brand-dot">.</span></span>
+    </div>
+
+    <div class="workspace-label">WORKSPACE</div>
+
+    <nav class="navigation">
+      <button class="nav-link active" data-view="all">
+        <span>▦</span> Overview
+      </button>
+      <button class="nav-link" data-view="today">
+        <span>◷</span> Today
+      </button>
+      <button class="nav-link" data-view="upcoming">
+        <span>▤</span> Upcoming
+      </button>
+      <button class="nav-link" data-view="important">
+        <span>☆</span> Important
+      </button>
+      <button class="nav-link" data-view="completed">
+        <span>✓</span> Completed
+      </button>
+    </nav>
+
+    <div class="workspace-label category-heading">
+      CATEGORIES
+    </div>
+    <div id="categoryNav" class="navigation"></div>
+
+    <div class="sidebar-bottom">
+      <div class="sidebar-tip">
+        <span>✧ Stay focused</span>
+        <p>Small steps make big progress.</p>
+      </div>
+      <button id="themeBtn" class="theme-btn">
+        ◐ Toggle theme
+      </button>
+    </div>
+  </aside>
+
+  <div class="main-area">
+    <header class="topbar">
+      <button id="menuBtn" class="menu-btn">☰</button>
+      <div class="breadcrumb">
+        Workspace <span>/</span>
+        <strong id="breadcrumbTitle">Overview</strong>
+      </div>
+      <div class="top-actions">
+        <span id="currentDate"></span>
+        <div class="avatar">TF</div>
+      </div>
+    </header>
+
+    <main class="content">
+      <section class="welcome">
+        <div>
+          <p class="eyebrow">YOUR PERSONAL WORKSPACE</p>
+          <h1 id="pageTitle">My Workspace ✨</h1>
+          <p id="pageSubtitle">
+            Organize your tasks and make today count.
+          </p>
+        </div>
+        <button class="primary-btn" id="openTaskBtn">
+          + New Task
+        </button>
+      </section>
+
+      <section class="stats">
+        <div class="stat-card">
+          <div class="stat-icon purple">▦</div>
+          <p>Total Tasks</p>
+          <h2 id="totalCount">0</h2>
+          <small>All your tasks</small>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon orange">◷</div>
+          <p>In Progress</p>
+          <h2 id="pendingCount">0</h2>
+          <small>Still to complete</small>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green">✓</div>
+          <p>Completed</p>
+          <h2 id="completedCount">0</h2>
+          <small>Great work!</small>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon red">!</div>
+          <p>Overdue</p>
+          <h2 id="overdueCount">0</h2>
+          <small>Need attention</small>
+        </div>
+      </section>
+
+      <section class="progress-card">
+        <div>
+          <p class="eyebrow">YOUR PROGRESS</p>
+          <h2>Keep the momentum going 🚀</h2>
+          <p>Every completed task is a step forward.</p>
+        </div>
+        <div class="progress-right">
+          <strong id="progressPercent">0%</strong>
+          <span>completed</span>
+        </div>
+        <div class="progress-track">
+          <div id="progressBar"></div>
+        </div>
+      </section>
+
+      <section class="task-section">
+        <div class="section-heading">
+          <div>
+            <h2 id="listTitle">All Tasks</h2>
+            <p id="listSubtitle">
+              Manage everything in one place.
+            </p>
+          </div>
+          <span id="taskCountBadge" class="count-badge">
+            0 tasks
+          </span>
+        </div>
+
+        <div class="task-toolbar">
+          <input id="searchInput" type="search"
+                 placeholder="⌕ Search tasks...">
+
+          <select id="priorityFilter">
+            <option value="all">All Priorities</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
+
+          <select id="sortSelect">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="due">Due Date</option>
+            <option value="priority">Priority</option>
+            <option value="alphabetical">A–Z</option>
+          </select>
+        </div>
+
+        <div id="taskList" class="task-list"></div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<!-- Task Modal -->
+<div class="modal-overlay" id="taskModal" hidden>
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <p class="eyebrow">TASK DETAILS</p>
+        <h2 id="modalTitle">Create New Task</h2>
+      </div>
+      <button class="close-btn" id="closeModalBtn">×</button>
+    </div>
+
+    <form id="taskForm">
+      <label for="taskTitle">Task Title *</label>
+      <input id="taskTitle" type="text"
+             placeholder="e.g. Finish website design"
+             maxlength="150" required>
+
+      <label for="taskDescription">Description</label>
+      <textarea id="taskDescription" rows="3"
+                placeholder="Add more details..."></textarea>
+
+      <div class="form-row">
+        <div>
+          <label for="taskDate">Due Date</label>
+          <input id="taskDate" type="date">
+        </div>
+        <div>
+          <label for="taskPriority">Priority</label>
+          <select id="taskPriority">
+            <option value="Low">Low</option>
+            <option value="Medium" selected>Medium</option>
+            <option value="High">High</option>
+          </select>
+        </div>
+      </div>
+
+      <label for="taskCategory">Category</label>
+      <select id="taskCategory">
+        <option>Personal</option>
+        <option>Work</option>
+        <option>Study</option>
+        <option>Other</option>
+      </select>
+
+      <div class="modal-actions">
+        <button type="button" class="secondary-btn"
+                id="cancelModalBtn">Cancel</button>
+        <button type="submit" class="primary-btn"
+                id="saveTaskBtn">Create Task</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="toast" class="toast" role="status"></div>
+</body>
+</html>
+
